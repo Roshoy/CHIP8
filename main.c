@@ -1,3 +1,4 @@
+// Adrian Maciej super gosciu
 #include <stdio.h>
 
 int main(){
