@@ -20,6 +20,7 @@ typedef struct ch8_State {
     uint8_t SP;
     uint8_t DT;
     uint8_t ST;
+    bool VF;
     // Memory
     uint8_t ram[RAM_SIZE];
     uint16_t stack[STACK_SIZE];

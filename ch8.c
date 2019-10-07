@@ -99,12 +99,72 @@ int ch8_exec_next(ch8_State* state){
             }
             break;
         case 0x1:
-
+            state->PC = nnn;
             break;
         case 0x2:
             state->stack[state->SP] = state->PC;
             state->SP += 1;
             state->PC = nnn;
+            break;
+        case 0x3:
+            if(state->V[x] == kk){
+                state->PC += 2;
+            }
+            break;
+        case 0x4:
+            if(state->V[x] != kk){
+                state->PC += 2;
+            }
+            break;
+        case 0x5:
+            if(state->V[x] != state->V[n3]){
+                state->PC += 2;
+            }
+            break;
+        case 0x6:
+            state->V[x] = kk;
+            break;
+        case 0x7:
+            state->V[x] += kk;
+            break;
+        case 0x8:
+            switch(n4):{
+                case 0x0:
+                    state->V[x] = state->V[y];
+                    break;
+                case 0x1:
+                    state->V[x] |= state->V[y];
+                    break;
+                case 0x2:
+                    state->V[x] &= state->V[y];
+                    break;
+                case 0x3:
+                    state->V[x] ^= state->V[y];
+                    break;
+                case 0x4:
+                    uint16_t VF = state->V[x] + state->V[x];
+                    state->VF = VF & 0x0100 == 0x0100;
+                    state->V[x] = VF & 0x0011;
+                    break;
+                case 0x5:
+                    uint16_t VF = 0x0100 + state->V[x] - state->V[y];
+                    state->VF = VF & 0x0100 == 0x0100;
+                    state->V[x] = VF & 0x0011;
+                    break;
+                case 0x6:
+                    state->VF = state->V[x] & 0x01 == 0x01;
+                    state->V[x] = state->V[x] >> 1;
+                    break;
+                case 0x7:
+                    uint16_t VF = 0x0100 + state->V[y] - state->V[x];
+                    state->VF = VF & 0x0100 == 0x0100;
+                    state->V[x] = VF & 0x0011;
+                    break;
+                case 0xE:
+                    state->VF = state->V[x] & 0x08 == 0x08;
+                    state->V[x] = state->V[x] << 1;
+                    break;                
+            }
             break;
     }
 
