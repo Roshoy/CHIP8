@@ -4,13 +4,15 @@
 #ifndef CH8
 #define CH8
 
-#define V_REGS_COUNT 1 << 4;
-#define KEYS_COUNT   1 << 4;
-#define STACK_SIZE   1 << 4;
-#define RAM_SIZE     1 << 12;
-#define VRAM_SIZE    1 << 11;
-#define KEY_WAIT     0xFF;
-#define KEY_IGNORE   0x80;
+#define V_REGS_COUNT (1 << 4)
+#define KEYS_COUNT   (1 << 4)
+#define STACK_SIZE   (1 << 4)
+#define RAM_SIZE     (1 << 12)
+#define VRAM_SIZE    (1 << 11)
+#define KEY_WAIT     0xFF
+#define KEY_IGNORE   0x80
+#define SCREEN_WIDTH 64
+#define SCREEN_HEIGHT 32
 
 typedef struct ch8_State {
     // Registers
@@ -20,7 +22,6 @@ typedef struct ch8_State {
     uint8_t SP;
     uint8_t DT;
     uint8_t ST;
-    bool VF;
     // Memory
     uint8_t ram[RAM_SIZE];
     uint16_t stack[STACK_SIZE];
