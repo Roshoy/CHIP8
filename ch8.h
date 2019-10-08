@@ -1,34 +1,34 @@
 #include<stdint.h>
 #include<stdbool.h>
 
-#ifndef CH8
-#define CH8
+#ifndef CH8_H
+#define CH8_H
 
-#define V_REGS_COUNT (1 << 4)
-#define KEYS_COUNT   (1 << 4)
-#define STACK_SIZE   (1 << 4)
-#define RAM_SIZE     (1 << 12)
-#define VRAM_SIZE    (1 << 11)
-#define KEY_WAIT     0xFF
-#define KEY_IGNORE   0x80
-#define SCREEN_WIDTH 64
-#define SCREEN_HEIGHT 32
+#define CH8_V_REG_COUNT (1 << 4)
+#define CH8_KEYS_COUNT   (1 << 4)
+#define CH8_STACK_SIZE   (1 << 4)
+#define CH8_RAM_SIZE     (1 << 12)
+#define CH8_VRAM_SIZE    (1 << 11)
+#define CH8_KEY_WAIT     0xFF
+#define CH8_KEY_IGNORE   0x80
+#define CH8_VRAM_WIDTH 64
+#define CH8_VRAM_HEIGHT 32
 
 typedef struct ch8_State {
     // Registers
-    uint8_t V[V_REGS_COUNT];
+    uint8_t V[CH8_V_REG_COUNT];
     uint16_t I;
     uint16_t PC;
     uint8_t SP;
     uint8_t DT;
     uint8_t ST;
     // Memory
-    uint8_t ram[RAM_SIZE];
-    uint16_t stack[STACK_SIZE];
+    uint8_t ram[CH8_RAM_SIZE];
+    uint16_t stack[CH8_STACK_SIZE];
     // Vram
-    bool vram[VRAM_SIZE];
+    bool vram[CH8_VRAM_SIZE];
     // Keyboard state
-    bool keys[KEYS_COUNT];
+    bool keys[CH8_KEYS_COUNT];
     // Key to wait for
     uint8_t key_state;
     uint8_t key_reg_idx;
