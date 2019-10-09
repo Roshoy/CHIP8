@@ -72,24 +72,29 @@ int main(int argc, char **argv){
              SDL_GetError());
       exit(1);
     }
+    int x_ratio = WINDOW_WIDTH/CH8_VRAM_WIDTH;
+    int y_ratio = WINDOW_HEIGHT/CH8_VRAM_HEIGHT;
 
     SDL_Event event;
 
-    bool emulating = false;
-    int x_ratio = WINDOW_WIDTH/CH8_VRAM_WIDTH;
-    int y_ratio = WINDOW_HEIGHT/CH8_VRAM_HEIGHT;
+    bool emulating, restart;
+    emulating = restart = true;
 
     ch8_State chip8;
     ch8_init(&chip8);
 
-    if(ch8_load_rom(&chip8, (uint8_t*) rom_buff, (uint16_t) rom_size) != 0) {
-      printf("ROM load failed.\n");
-      exit(1);
-    }
-
     // Event loop
-    while(!emulating) {
-      for(int i=0; i<5; i++){
+    while(emulating) {
+      if (restart) {
+        ch8_init(&chip8);
+        if(ch8_load_rom(&chip8, (uint8_t*) rom_buff, (uint16_t) rom_size) != 0) {
+          printf("ROM load failed.\n");
+          exit(1);
+        }
+        restart = false;
+      }
+
+      for(int i=0; i<2; i++){
         int err;
         if((err = ch8_exec_next(&chip8)) != 0){
           printf("ch8_exec_next() failed with code %d\n", err);
@@ -122,6 +127,8 @@ int main(int argc, char **argv){
           case SDLK_x: { ch8_set_key(&chip8, 0x0, true); break; }
           case SDLK_c: { ch8_set_key(&chip8, 0xB, true); break; }
           case SDLK_v: { ch8_set_key(&chip8, 0xF, true); break; }
+          case SDLK_b: { restart = true; break; }
+          case SDLK_ESCAPE: { emulating = false; break; }
           break;
           }
           break;
@@ -149,11 +156,11 @@ int main(int argc, char **argv){
       }
 
       // Clear background
-      SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+      SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xFF);
       SDL_RenderClear(renderer);
 
       // Set draw color to RED.
-      SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF);
+      SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
 
       // Render VRAM contents
       for(int y=0; y < CH8_VRAM_HEIGHT; y++){
